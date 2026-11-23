@@ -1,1 +1,54 @@
-
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#fff0f5">
+<title>Barışalım mı? 🥺</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100svh;overflow:hidden;display:grid;place-items:center;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(circle at top,#fff8fb,#ffe4ef 62%,#ffd4e6);color:#6d2948;padding:18px}
+.card{width:min(100%,430px);min-height:420px;padding:30px 20px;border:1px solid #ffffffa8;border-radius:30px;text-align:center;background:#ffffffb8;box-shadow:0 18px 55px #d57da633;backdrop-filter:blur(10px);position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.heart{font-size:62px;animation:pulse 1.5s ease-in-out infinite;margin-bottom:8px}h1{font-size:clamp(25px,7vw,34px);margin:8px 0 10px;line-height:1.2}p{color:#98617b;font-size:16px;margin:0 0 28px}
+.buttons{display:flex;gap:14px;align-items:center;justify-content:center;width:100%;min-height:58px;position:relative}
+button{border:0;border-radius:999px;padding:14px 26px;font-size:17px;font-weight:700;cursor:pointer;touch-action:manipulation;box-shadow:0 7px 18px #c85b8a2b;transition:transform .15s ease}
+#yes{background:#ed6d9d;color:white}#yes:active{transform:scale(.96)}#no{background:#f4d9e5;color:#9a5474;position:relative}#no.moving{position:fixed;z-index:5}
+.hidden{display:none!important}#result{animation:appear .5s ease both}#result h2{font-size:clamp(24px,6vw,32px);margin:10px 0;color:#d64e86}#result p{font-size:19px;color:#7b3457;line-height:1.55;margin:0}
+.sparkle{position:fixed;pointer-events:none;opacity:.65;font-size:19px;animation:drift 5s linear forwards}
+@keyframes pulse{50%{transform:scale(1.12)}}@keyframes appear{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes drift{from{transform:translateY(15vh) rotate(0)}to{transform:translateY(-110vh) rotate(220deg)}}
+@media(max-height:600px){.card{min-height:360px;padding:22px 16px}.heart{font-size:48px}p{margin-bottom:18px}}
+</style>
+</head>
+<body>
+<main class="card">
+<div class="heart">💗</div>
+<section id="ask">
+<h1>Barışalım mı? 🥺</h1>
+<p>Bir şans daha verelim mi?</p>
+<div class="buttons"><button id="yes">Evet 💞</button><button id="no">Hayır 🙈</button></div>
+</section>
+<section id="result" class="hidden" aria-live="polite">
+<div class="heart">🥹💗</div>
+<h2>Teşekkür ederim👉👈🥺</h2>
+<p>O zaman hafta sonu buluşuyoruz ❤️</p>
+</section>
+</main>
+<script>
+const noBtn=document.getElementById('no'),yesBtn=document.getElementById('yes'),ask=document.getElementById('ask'),result=document.getElementById('result');
+let dodges=0;
+function dodge(){
+ if(ask.classList.contains('hidden'))return;
+ noBtn.classList.add('moving');
+ const pad=12,maxX=Math.max(pad,innerWidth-noBtn.offsetWidth-pad),maxY=Math.max(pad,innerHeight-noBtn.offsetHeight-pad);
+ noBtn.style.left=(pad+Math.random()*(maxX-pad))+'px';noBtn.style.top=(pad+Math.random()*(maxY-pad))+'px';
+ dodges++;noBtn.textContent=dodges%4===0?'Yakalayamazsın 🙃':'Hayır 🙈';
+}
+noBtn.addEventListener('pointerenter',dodge);
+noBtn.addEventListener('pointerdown',e=>{e.preventDefault();dodge()});
+noBtn.addEventListener('click',e=>{e.preventDefault();dodge()});
+yesBtn.addEventListener('click',()=>{
+ ask.classList.add('hidden');noBtn.classList.remove('moving');noBtn.style.left='';noBtn.style.top='';result.classList.remove('hidden');
+ for(let i=0;i<24;i++){const s=document.createElement('span');s.className='sparkle';s.textContent=['💗','💕','✨','💖'][Math.floor(Math.random()*4)];s.style.left=Math.random()*100+'vw';s.style.top=(60+Math.random()*40)+'vh';s.style.animationDelay=Math.random()*.8+'s';document.body.appendChild(s);}
+});
+</script>
+</body>
+</html>
